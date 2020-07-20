@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using Differential.Models;
 
@@ -16,7 +17,7 @@ namespace Differential.Context
 
         public DifferentialContext()
         {
-            Sequences = Read<Sequence>(nameof(Sequence));
+            Sequences = Read<Sequence>(nameof(Sequences));
 
         }
 
@@ -33,14 +34,16 @@ namespace Differential.Context
                     string[] fields = sr.ReadLine().Split(Delimiter);
                     foreach (var map in maps)
                     {
-                        typeof(T).GetProperty(map.Item2).SetValue(res,fields[map.Item1]);
+                        var fieldValue = typeof(T).GetProperty(map.Item2).GetValue(res);
+                        var converter = TypeDescriptor.GetConverter(fieldValue.GetType());                      
+                        typeof(T).GetProperty(map.Item2).SetValue(res, converter.ConvertFromInvariantString(fields[map.Item1]));
                     }                  
                     yield return res;
                 }
             }
         }
 
-        public IEnumerable<Tuple<int, string>> GetFieldMap(string[] header)
+        private IEnumerable<Tuple<int, string>> GetFieldMap(string[] header)
         {
             int counter = 0;
             foreach (var field in header)
@@ -49,6 +52,5 @@ namespace Differential.Context
                 counter++;
             }
         }
-
     }
 }
