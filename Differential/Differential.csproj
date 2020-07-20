@@ -10,6 +10,9 @@
     <Folder Include="Dto\" />
     <Folder Include="Generators\" />
     <Folder Include="Repositories\" />
+    <Folder Include="Storages\" />
+    <Folder Include="Models\" />
+    <Folder Include="Context\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Generators\RamdomGeneratorSetting.csv">
