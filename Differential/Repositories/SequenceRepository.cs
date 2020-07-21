@@ -11,12 +11,12 @@ namespace Differential.Repositories
 
         public Sequence CreateSequence(Sequence sequence)
         {
-            throw new NotImplementedException();
+            return db.Sequences.Add(sequence);
         }
 
         public Sequence GetLastSequence()
         {
-            return db.Sequences.Last();
+            return db.Sequences.LastOrDefault();
         }
     }
 }
